@@ -5,10 +5,6 @@ import bcrypt from "bcryptjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  return POST(new Request("http://localhost"));
-}
-
 function getDbConfig() {
   return {
     host: process.env.DB_HOST || "127.0.0.1",
@@ -19,34 +15,15 @@ function getDbConfig() {
   };
 }
 
-export async function POST(req: Request) {
+// 🔥 GET = création automatique admin
+export async function GET() {
   let conn: mysql.Connection | null = null;
 
   try {
-    const body = await req.json();
-
-    const fullName = String(body.name || "").trim();
-    const email = String(body.email || "").trim().toLowerCase();
-    const password = String(body.password || "");
-
-    if (!fullName || !email || !password) {
-      return NextResponse.json(
-        { success: false, message: "Nom, email et mot de passe obligatoires." },
-        { status: 400 }
-      );
-    }
-
-    if (password.length < 6) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Le mot de passe doit contenir au moins 6 caractères.",
-        },
-        { status: 400 }
-      );
-    }
-
     conn = await mysql.createConnection(getDbConfig());
+
+    const email = "admin@boutique.local";
+    const password = "admin123"; // 🔥 mot de passe simple pour test
 
     const [existing] = await conn.query<mysql.RowDataPacket[]>(
       "SELECT id FROM users WHERE email = ? LIMIT 1",
@@ -54,13 +31,10 @@ export async function POST(req: Request) {
     );
 
     if (existing.length > 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Un utilisateur avec cet email existe déjà.",
-        },
-        { status: 409 }
-      );
+      return NextResponse.json({
+        success: true,
+        message: "Admin existe déjà",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -70,26 +44,28 @@ export async function POST(req: Request) {
       INSERT INTO users (shop_id, full_name, email, password_hash, role, is_active)
       VALUES (1, ?, ?, ?, 'admin', 1)
       `,
-      [fullName, email, hashedPassword]
+      ["Admin", email, hashedPassword]
     );
 
     return NextResponse.json({
       success: true,
-      message: "Administrateur créé avec succès.",
+      message: "Admin créé",
+      email,
+      password,
     });
   } catch (error) {
     console.error("create-admin error:", error);
 
     return NextResponse.json(
-      {
-        success: false,
-        message: "Erreur serveur pendant la création de l'admin.",
-      },
+      { success: false, message: "Erreur serveur" },
       { status: 500 }
     );
   } finally {
-    if (conn) {
-      await conn.end();
-    }
+    if (conn) await conn.end();
   }
+}
+
+// 🔹 POST (tu peux garder si besoin)
+export async function POST(req: Request) {
+  return NextResponse.json({ success: false, message: "Utilise GET" });
 }
