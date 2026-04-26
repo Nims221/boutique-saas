@@ -1,0 +1,18 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/test-db/debug-env/route": "app/api/test-db/debug-env/route.js",
+  "/api/test-db/route": "app/api/test-db/route.js",
+  "/api/test-db/sales/route": "app/api/test-db/sales/route.js",
+  "/api/setup/set-admin-password/route": "app/api/setup/set-admin-password/route.js",
+  "/api/setup/create-admin/route": "app/api/setup/create-admin/route.js",
+  "/api/upload/product-image/route": "app/api/upload/product-image/route.js",
+  "/logout/route": "app/logout/route.js",
+  "/page": "app/page.js",
+  "/login/page": "app/login/page.js",
+  "/utilisateurs/page": "app/utilisateurs/page.js",
+  "/produits/page": "app/produits/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/stock/page": "app/stock/page.js",
+  "/ventes/page": "app/ventes/page.js",
+  "/reappro/page": "app/reappro/page.js"
+}

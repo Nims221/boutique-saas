@@ -9,13 +9,23 @@ import {
   Package,
   RefreshCcw,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 
+type UserRole = "admin" | "manager" | "seller";
+
 type SidebarProps = {
-  role?: "admin" | "manager" | "seller";
+  role?: UserRole;
 };
 
-const navItems = [
+type NavItem = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  roles: UserRole[];
+};
+
+const navItems: NavItem[] = [
   {
     href: "/dashboard",
     label: "Tableau de bord",
@@ -52,7 +62,7 @@ const navItems = [
     icon: Users,
     roles: ["admin"],
   },
-] as const;
+];
 
 export function Sidebar({ role = "seller" }: SidebarProps) {
   const pathname = usePathname();

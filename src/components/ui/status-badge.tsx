@@ -1,6 +1,34 @@
-type Status = "Disponible" | "Faible" | "Critique" | "Payée" | "En attente" | "Brouillon" | "Commandé" | "Reçu";
+type Status =
+  | "available"
+  | "low"
+  | "critical"
+  | "Disponible"
+  | "Faible"
+  | "Critique"
+  | "Payée"
+  | "En attente"
+  | "Brouillon"
+  | "Commandé"
+  | "Reçu";
 
-const map: Record<Status, string> = {
+const labelMap: Record<Status, string> = {
+  available: "Disponible",
+  low: "Faible",
+  critical: "Critique",
+  Disponible: "Disponible",
+  Faible: "Faible",
+  Critique: "Critique",
+  Payée: "Payée",
+  "En attente": "En attente",
+  Brouillon: "Brouillon",
+  Commandé: "Commandé",
+  Reçu: "Reçu",
+};
+
+const classMap: Record<Status, string> = {
+  available: "bg-emerald-400/10 text-emerald-300 border-emerald-400/20",
+  low: "bg-amber-400/10 text-amber-300 border-amber-400/20",
+  critical: "bg-rose-400/10 text-rose-300 border-rose-400/20",
   Disponible: "bg-emerald-400/10 text-emerald-300 border-emerald-400/20",
   Faible: "bg-amber-400/10 text-amber-300 border-amber-400/20",
   Critique: "bg-rose-400/10 text-rose-300 border-rose-400/20",
@@ -13,8 +41,10 @@ const map: Record<Status, string> = {
 
 export function StatusBadge({ status }: { status: Status }) {
   return (
-    <span className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${map[status]}`}>
-      {status}
+    <span
+      className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${classMap[status]}`}
+    >
+      {labelMap[status]}
     </span>
   );
 }

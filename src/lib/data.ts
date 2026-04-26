@@ -27,6 +27,17 @@ export type StockAlertItem = {
   status: "low" | "critical";
 };
 
+export type StockItem = {
+  id: number;
+  name: string;
+  sku: string;
+  category: string;
+  stock: number;
+  threshold: number;
+  status: "available" | "low" | "critical";
+  price?: string | number;
+};
+
 export type ActivityItem = {
   id: number;
   type: "sale" | "purchase" | "alert";

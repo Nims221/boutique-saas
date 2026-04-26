@@ -20,6 +20,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
+
     const fullName = String(body.name || "").trim();
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
@@ -33,7 +34,10 @@ export async function POST(req: Request) {
 
     if (password.length < 6) {
       return NextResponse.json(
-        { success: false, message: "Le mot de passe doit contenir au moins 6 caractères." },
+        {
+          success: false,
+          message: "Le mot de passe doit contenir au moins 6 caractères.",
+        },
         { status: 400 }
       );
     }
@@ -41,13 +45,16 @@ export async function POST(req: Request) {
     conn = await mysql.createConnection(getDbConfig());
 
     const [existing] = await conn.query<mysql.RowDataPacket[]>(
-      `SELECT id FROM users WHERE email = ? LIMIT 1`,
+      "SELECT id FROM users WHERE email = ? LIMIT 1",
       [email]
     );
 
     if (existing.length > 0) {
       return NextResponse.json(
-        { success: false, message: "Un utilisateur avec cet email existe déjà." },
+        {
+          success: false,
+          message: "Un utilisateur avec cet email existe déjà.",
+        },
         { status: 409 }
       );
     }
@@ -70,10 +77,15 @@ export async function POST(req: Request) {
     console.error("create-admin error:", error);
 
     return NextResponse.json(
-      { success: false, message: "Erreur serveur pendant la création de l'admin." },
+      {
+        success: false,
+        message: "Erreur serveur pendant la création de l'admin.",
+      },
       { status: 500 }
     );
   } finally {
-    if (conn) await conn.end();
+    if (conn) {
+      await conn.end();
+    }
   }
 }
