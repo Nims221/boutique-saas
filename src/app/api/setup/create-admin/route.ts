@@ -5,6 +5,10 @@ import bcrypt from "bcryptjs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+export async function GET() {
+  return POST(new Request("http://localhost"));
+}
+
 function getDbConfig() {
   return {
     host: process.env.DB_HOST || "127.0.0.1",
